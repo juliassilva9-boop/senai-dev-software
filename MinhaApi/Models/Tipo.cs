@@ -1,3 +1,4 @@
+/*
 namespace MinhaApi.Models;
 
 public class Tipo
@@ -7,3 +8,4 @@ public class Tipo
     public string Nome { get; set; }
         = string.Empty;
 }
+*/

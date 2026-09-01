@@ -1,3 +1,4 @@
+/*
 using MinhaApi.Models;
 using MinhaApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -6,9 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/[controller]")]
 public class TipoController : ControllerBase
 {
+*/
+
+/*
     private readonly ITipoService _service;
 
-    public TipoController(ITipoService service) => _service = service;
+    //public TipoController(ITipoService service) => _service = service;
 
     //GETALL
     [HttpGet]
@@ -64,3 +68,9 @@ public class TipoController : ControllerBase
         return NoContent();
     }
 }
+
+internal interface ITipoService
+{
+}
+
+*/
