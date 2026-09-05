@@ -1,18 +1,20 @@
 namespace MinhaApi.Models;
 
-public class Produto
+public class NewBaseType
+{
+    public required string Cpf { get; set; }
+}
+
+public class Cliente : NewBaseType
 {
     public int Id { get; set; }
 
     public string Nome { get; set; }
         = string.Empty;
 
-    public decimal Preco { get; set; }
-
-    public int Estoque { get; set; }
+    public string Email { get; set; }
+        = string.Empty;
 
     public bool Ativo { get; set; }
         = true;
-    public object? Cpf { get; internal set; }
-
 }

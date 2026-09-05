@@ -20,6 +20,16 @@ builder.Services.AddScoped<
     IProdutoService,
     ProdutoService>();
 
+    // ✅ Registra o Repository
+builder.Services.AddScoped<
+    IClienteRepository,
+    ClienteRepository>();
+
+// ✅ Registra a Service
+builder.Services.AddScoped<
+    IClienteService,
+    ClienteService>();
+
 
 
 var app = builder.Build();
@@ -33,3 +43,5 @@ if (app.Environment.IsDevelopment())
 
 app.MapControllers();
 app.Run();
+
+
