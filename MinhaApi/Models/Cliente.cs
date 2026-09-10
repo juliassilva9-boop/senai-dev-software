@@ -2,6 +2,10 @@ namespace MinhaApi.Models;
 
 public class NewBaseType
 {
+    public NewBaseType()
+    {
+    }
+
     public required string Cpf { get; set; }
 }
 
