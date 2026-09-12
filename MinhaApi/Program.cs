@@ -30,15 +30,15 @@ builder.Services.AddScoped<
 builder.Services.AddScoped<
     IClienteService,
     ClienteService>();
-     // ✅ Registra o Repository
+// ✅ Registra o Repository
 builder.Services.AddScoped<
     IVendaRepository,
     VendaRepository>();
+//Registro do repository
+    builder.Services.AddScoped<
+    IVendaService,
+    VendaService>();
 
-// ✅ Registra a Service
-builder.Services.AddScoped<
-    IVendaRepository,
-    VendaRepository>();
 
 
 
@@ -55,4 +55,11 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.Run();
 
+internal interface IVendaService
+{
+}
 
+
+internal class VendaService
+{
+}

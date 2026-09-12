@@ -1,9 +1,7 @@
-using System.Diagnostics;
 using MinhaApi.Models;
 using MinhaApi.Repositories;
 using MySqlConnector;
 
-[DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
 public class ClienteRepository : IClienteRepository
 {
     private readonly string _connectionString;
