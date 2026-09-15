@@ -13,23 +13,15 @@ public class VendaController : ControllerBase
 
     
 
-    // GET /api/Cliente
-    [HttpGet]
-    public IActionResult GetAll()
-    {
-        var Venda = _service.GetAll();
-        return Ok(Venda);
-    }
-
     // GET /api/Cliente/1
-    [HttpGet("{id}")]
-    public IActionResult GetById(int id)
-    {
-        var Venda = _service.GetById(id);
-        if (Venda == null)
-            return NotFound();
-        return Ok(Venda);
-    }
+    // [HttpGet("{id}")]
+    // public IActionResult GetById(int id)
+    // {
+    //     var Venda = _service.GetById(id);
+    //     if (Venda == null)
+    //         return NotFound();
+    //     return Ok(Venda);
+    // }
 
     // POST /api/Cliente
     [HttpPost]
@@ -40,30 +32,8 @@ public class VendaController : ControllerBase
 
         var criado = _service.Create(Venda);
 
-        return CreatedAtAction(nameof(GetById), new { id = criado.Id }, criado);
+        return Ok(criado);
     }
 
-    // PUT /api/Cliente/1
-    [HttpPut("{id}")]
-    public IActionResult Update(int id, [FromBody] Venda Venda)
-        {
-            var atualizado = _service.Update(id, Venda);
 
-            if (atualizado == null)
-                return NotFound();
-
-            return Ok(atualizado);
-        }
-
-    // DELETE /api/Cliente/1
-    [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
-    {
-        var deletado = _service.Delete(id);
-
-        if (!deletado)
-            return NotFound();
-
-        return NoContent();
-    }
-}
+} 

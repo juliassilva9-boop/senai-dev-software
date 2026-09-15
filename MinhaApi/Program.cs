@@ -54,12 +54,3 @@ if (app.Environment.IsDevelopment())
 
 app.MapControllers();
 app.Run();
-
-internal interface IVendaService
-{
-}
-
-
-internal class VendaService
-{
-}

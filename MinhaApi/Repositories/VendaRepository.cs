@@ -7,6 +7,7 @@ using MySqlConnector;
 public class VendaRepository : IVendaRepository
 {
     private readonly string _connectionString;
+    
     public VendaRepository(IConfiguration config) 
       => _connectionString = config.GetConnectionString("DefaultConnection")!;
 
