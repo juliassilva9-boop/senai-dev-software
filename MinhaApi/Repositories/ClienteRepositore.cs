@@ -20,7 +20,7 @@ public class ClienteRepository : IClienteRepository
       using var conn = new MySqlConnection(_connectionString);
       conn.Open();
 
-      string sql = "SELECT id, nome, email, cpf, ativo FROM clientes";
+      string sql = "SELECT id, nome, email, cpf, ativo FROM cliente";
       using var cmd = new MySqlCommand(sql, conn);
       using var reader = cmd.ExecuteReader();
 
@@ -41,7 +41,7 @@ public class ClienteRepository : IClienteRepository
         using var conn = new MySqlConnection(_connectionString);
             conn.Open();
     
-            string sql = "SELECT id, nome, email, cpf, ativo FROM clientes WHERE id = @Id";
+            string sql = "SELECT id, nome, email, cpf, ativo FROM cliente WHERE id = @Id";
             using var cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@Id", id);
     
@@ -64,7 +64,7 @@ public void Add(Cliente c) {
     using var conn = new MySqlConnection(_connectionString);
     conn.Open();
 
-    string sql = @"INSERT INTO clientes (nome, email, cpf, ativo) 
+    string sql = @"INSERT INTO cliente (nome, email, cpf, ativo) 
                    VALUES (@Nome, @Email, @Cpf, @Ativo);
                    SELECT LAST_INSERT_ID();";
 
@@ -81,7 +81,7 @@ public void Add(Cliente c) {
   public void Update(Cliente c) {
     using var conn = new MySqlConnection(_connectionString);
     conn.Open();
-    string sql = @"UPDATE clientes 
+    string sql = @"UPDATE cliente
                    SET nome = @Nome, Email = @Email, cpf = @Cpf, ativo = @Ativo 
                    WHERE id = @Id";
     using var cmd = new MySqlCommand(sql, conn);
@@ -97,14 +97,11 @@ public void Delete(int id)
     {
     using var conn = new MySqlConnection(_connectionString);
     conn.Open();
-    string sql = "DELETE FROM clientes WHERE id = @Id";
+    string sql = "DELETE FROM cliente WHERE id = @Id";
     using var cmd = new MySqlCommand(sql, conn);
     cmd.Parameters.AddWithValue("@Id", id);
     cmd.ExecuteNonQuery();
 }
 
-    private static object GetDebuggerDisplay()
-    {
-        throw new NotImplementedException();
-    }
+
 }

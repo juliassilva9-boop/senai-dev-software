@@ -1,8 +1,7 @@
 namespace MinhaApi.Models;
 
-public class Venda : NewBaseType
+public class Venda
 {
-    internal int estoque;
 
     public int Id { get; set; }
 

@@ -13,6 +13,6 @@ public class Produto
 
     public bool Ativo { get; set; }
         = true;
-    public object? Cpf { get; internal set; }
+   
 
 }

@@ -14,14 +14,25 @@ public class VendaController : ControllerBase
     
 
     // GET /api/Cliente/1
-    // [HttpGet("{id}")]
-    // public IActionResult GetById(int id)
-    // {
-    //     var Venda = _service.GetById(id);
-    //     if (Venda == null)
-    //         return NotFound();
-    //     return Ok(Venda);
-    // }
+    [HttpGet("{id}")]
+    public IActionResult GetById(int id)
+    {
+        var Venda = _service.GetById(id);
+        if (Venda == null)
+            return NotFound();
+        return Ok(Venda);
+    }
+
+
+     // GET /api/produto
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        var Vendas = _service.GetAll();
+        return Ok(Vendas);
+    }
+
+    
 
     // POST /api/Cliente
     [HttpPost]

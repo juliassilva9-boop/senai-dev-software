@@ -5,6 +5,7 @@
 using MinhaApi.Models;
 using MinhaApi.Services;
 using MinhaApi.Repositories;
+
 public class VendaService : IVendaService
 {
  private readonly IVendaRepository _repositoryVenda;
@@ -23,10 +24,10 @@ public class VendaService : IVendaService
     if (produto == null)
       throw new ArgumentException("Produto não encontrado");
 
-    if (venda.Quantidade <= 0)
-      throw new ArgumentException("Não existe Estoque disponível");
+   if (venda.Quantidade <= 0)
+     throw new ArgumentException("Não existe Estoque disponível");
       
-    if(venda.estoque < venda.Quantidade)  
+    if(produto.Estoque < venda.Quantidade)  
        throw new ArgumentException("Quantidade inválida");
 
     if(venda.Cliente_id < venda.Cliente_id)  
@@ -42,14 +43,16 @@ public class VendaService : IVendaService
     venda.Valor = produto.Preco * venda.Quantidade;
       
 
-    if( _repositoryCliente.GetById(venda.Cliente_id) != null)
-    if( _repositoryProduto.GetById(venda.Produto_id) != null)
+
       _repositoryVenda.Add(venda);
       return venda;
   }
-   
 
+public IEnumerable<Venda> GetAll()
+      => _repositoryVenda.GetAll();
 
+  public Venda? GetById(int id)
+      => _repositoryVenda.GetById(id);
 
 
 }
