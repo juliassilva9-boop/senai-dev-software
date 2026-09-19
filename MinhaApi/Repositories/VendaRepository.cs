@@ -36,7 +36,11 @@ void IVendaRepository.Add(Venda V) {
       using var conn = new MySqlConnection(_connectionString);
       conn.Open();
 
-      string sql = "SELECT id, cliente_id, produto_id, valor, data_venda FROM venda";
+      string sql = @"SELECT venda.id, produto_id, cliente_id, cliente.nome as cliente, 
+                        produtos.nome as produto, venda.valor, data_venda
+                        FROM venda
+                        JOIN cliente ON cliente.id = venda.cliente_id
+                        JOIN produtos ON produtos.id = venda.produto_id";
       using var cmd = new MySqlCommand(sql, conn);
       using var reader = cmd.ExecuteReader();
 
@@ -47,6 +51,7 @@ void IVendaRepository.Add(Venda V) {
               Produto_id = reader.GetInt32("produto_id"),
               Valor = reader.GetDecimal("valor"),
               Data_venda = reader.GetDateTime("data_venda")
+              
           });
       }
       return lista;
