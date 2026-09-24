@@ -1,14 +1,11 @@
 namespace MinhaApi.Models;
 
-public class NewBaseType
+
+public class Fornecedor
 {
 
 
-}
-
-public class Cliente 
-{
-
+    public required string Cnpj { get; set; }
     public int Id { get; set; }
 
     public string Nome { get; set; }
@@ -19,5 +16,8 @@ public class Cliente
 
     public bool Ativo { get; set; }
         = true;
-    public required string Cpf { get; set; }
+
+    public int Produto_id_Fornecedor {get; set;}
+
+    //public int Cliente_id_Fornecedor {get; set;}
 }

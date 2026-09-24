@@ -38,6 +38,15 @@ builder.Services.AddScoped<
     builder.Services.AddScoped<
     IVendaService,
     VendaService>();
+    // ✅ Registra o Repository
+builder.Services.AddScoped<
+    IFornecedorRepository,
+    FornecedorRepository>();
+// ✅ Registra a Service
+    builder.Services.AddScoped<
+    IFornecedorService,
+    FornecedorService>();
+
 
 
 
@@ -52,5 +61,3 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapControllers();
-app.Run();

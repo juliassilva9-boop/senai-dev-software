@@ -4,13 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ProdutoController : ControllerBase
+public class ProdutoController(IProdutoService service) : ControllerBase
 {
-    private readonly IProdutoService _service;
-
-    public ProdutoController(IProdutoService service) => _service = service;
+    private readonly IProdutoService _service = service;
 
     // GET /api/produto
+
     [HttpGet]
     public IActionResult GetAll()
     {

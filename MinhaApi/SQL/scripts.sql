@@ -41,3 +41,14 @@ VALUES
 INSERT INTO produtos (nome, preco, estoque, ativo) 
 VALUES 
 ('cabo C', 500.60, 45, 1);
+
+-- 6. Criação da Tabela de Fornecedores
+CREATE TABLE IF NOT EXISTS Fornecedor (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pruduto_id_fornecedor int not null,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    cnpj VARCHAR(14) NOT NULL,
+    ativo TINYINT(1) NOT NULL DEFAULT 1,
+   FOREIGN KEY (pruduto_id_fornecedor) REFERENCES produtos(id)
+);
