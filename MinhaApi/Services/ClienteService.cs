@@ -32,9 +32,17 @@ public class ClienteService : IClienteService
       return cliente;
   }
 
-    public bool Delete(int id)
-    {
-        throw new NotImplementedException();
+    
+    public bool Delete(int id) {
+        
+        var cliente = _repo.GetById(id);
+
+        if (cliente == null)
+            return false;
+
+        _repo.Delete(id);
+
+        return true;
     }
 
    

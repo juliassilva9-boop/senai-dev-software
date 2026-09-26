@@ -2,53 +2,70 @@ using MinhaApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using MinhaApi.Services;
 
-
-[ApiController]
-[Route("api/[controller]")]
-
-public class FornecedoresController(IFornecedorService service) : ControllerBase
-
+namespace MinhaApi.Controllers
 {
-   private readonly IFornecedorService _service = service;
-
-    //public FornecedoresController(IFornecedorService service) => _service = service;
-
-
-    // GET /api/Cliente
-    [HttpGet]
-    public IActionResult GetAll()
+    [ApiController]
+    [Route("api/[controller]")]
+    public class FornecedoresController(Services.IFornecedorService service) : ControllerBase
     {
-        var Fornecedor = _service.GetAll();
-        return Ok(Fornecedor);
-    }
+        private readonly Services.IFornecedorService _service = service;
+        private string cnpj = "";
 
-    // GET /api/Cliente/1
-    [HttpGet("{id}")]
-    public IActionResult GetById(int id)
-    {
-        var Fornecedor = _service.GetById(id);
-        if (Fornecedor == null)
-            return NotFound();
-        return Ok(Fornecedor);
-    }
-
-    // POST /api/Fornecedores
-    [HttpPost]
-    public IActionResult Create([FromBody] Fornecedor Fornecedor)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var criado = _service.Create(Fornecedor);
-
-        return CreatedAtAction(nameof(GetById), new { id = criado.Id }, criado);
-    }
-
-    // PUT /api/Fornecedores/1
-    [HttpPut("{id}")]
-    public IActionResult Update(int id, [FromBody] Fornecedor Fornecedor)
+        // GET /api/Fornecedores
+        [HttpGet]
+        public IActionResult GetAll()
         {
-            var atualizado = _service.Update(id, fornecedor: Fornecedor);
+            var fornecedores = _service.GetAll();
+            return Ok(fornecedores);
+        }
+
+        // GET /api/Fornecedores/cnpj/12345678901234
+        [HttpGet("{cnpj}")]
+        public IActionResult GetByCnpj(string cnpj)
+        {
+            var fornecedor = _service.GetById(cnpj);
+
+            if (fornecedor == null)
+                return NotFound();
+
+            return Ok(fornecedor);
+        }
+
+        // GET /api/Fornecedores/nome/FornecedorTeste
+        [HttpGet("nome/{nome}")]
+        public IActionResult GetByNome(string nome)
+        {
+            var fornecedor = _service.GetByNome(nome);
+
+            if (fornecedor == null)
+                return NotFound();
+
+            return Ok(fornecedor);
+        }
+
+        // POST /api/Fornecedores
+        [HttpPost]
+        public IActionResult Create([FromBody] Fornecedor fornecedor)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var criado = _service.Create(fornecedor);
+
+            return CreatedAtAction(
+                nameof(GetByCnpj),
+                new { cnpj = criado.Cnpj},
+                criado
+            );
+        }
+
+        // PUT /api/Fornecedores/12345678901234
+        [HttpPut("{cnpj}")]
+        public IActionResult Update(
+            string cnpj,
+            [FromBody] Fornecedor fornecedor)
+        {
+            var atualizado = _service.Update(cnpj, fornecedor);
 
             if (atualizado == null)
                 return NotFound();
@@ -56,17 +73,16 @@ public class FornecedoresController(IFornecedorService service) : ControllerBase
             return Ok(atualizado);
         }
 
-    // DELETE /api/Fornecedores/1
-    [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
-    {
-        var deletado = _service.Delete(id);
+        // DELETE /api/Fornecedores/12345678901234
+        [HttpDelete("{cnpj}")]
+        public IActionResult Delete(string cnpj)
+        {
+            var deletado = _service.Delete(cnpj);
 
-        if (!deletado)
-            return NotFound();
+            if (!deletado)
+                return NotFound();
 
-        return NoContent();
+            return NoContent();
+        }
     }
 }
-
-

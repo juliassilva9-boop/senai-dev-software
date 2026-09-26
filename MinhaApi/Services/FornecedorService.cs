@@ -5,14 +5,11 @@
 using MinhaApi.Models;
 using MinhaApi.Services;
 using MinhaApi.Repositories;
-public class FornecedorService : IFornecedorService
+public class FornecedorService(IFornecedorRepository repo) : IFornecedorService
 {
-  private readonly IFornecedorRepository _repo;
+  private readonly IFornecedorRepository _repo = repo;
 
-  public FornecedorService(IFornecedorRepository repo)
-      => _repo = repo;
-
-  public IEnumerable<Fornecedor> GetAll()
+    public IEnumerable<Fornecedor> GetAll()
       => _repo.GetAll();
 
   public Fornecedor? GetById(int id)
@@ -47,4 +44,49 @@ public class FornecedorService : IFornecedorService
         return true;
     }
 
+    public bool Delete(string cnpj)
+    {
+        
+        var fornecedor = _repo.GetBycnpj(cnpj);
+
+        if (fornecedor == null)
+            return false;
+
+        _repo.Delete(cnpj);
+
+        return true;
+    }
+    
+
+     public Fornecedor? Update(int Cnpj, Fornecedor f)
+  {
+      if (_repo.GetBycnpj(Cnpj) == null) return null;
+      f.Cnpj = Cnpj;
+      _repo.Update(fornecedor: f);
+      return f;
+  }
+
+
+
+    public Fornecedor? GetByNome(string Nome, Fornecedor fornecedor)
+    {
+    
+      if (_repo.GetBynome(Nome) == null) return null;
+      fornecedor.Nome = Nome;
+      _repo.Update(fornecedor);
+      return fornecedor;
+  
+    }
+
+
+
+    public Fornecedor GetByNome(string nome)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Fornecedor GetById(string cnpj)
+    {
+        throw new NotImplementedException();
+    }
 }

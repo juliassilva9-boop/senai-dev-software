@@ -36,6 +36,14 @@ public class ProdutoService : IProdutoService
 
     public bool Delete(int id)
     {
-        throw new NotImplementedException();
+        
+        var Produto = _repo.GetById(id);
+
+        if (Produto == null)
+            return false;
+
+        _repo.Delete(id);
+
+        return true;
     }
 }

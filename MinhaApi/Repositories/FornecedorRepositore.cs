@@ -25,7 +25,7 @@ public class FornecedorRepository : IFornecedorRepository
               Id = reader.GetInt32("id"),
               Nome = reader.GetString("nome"),
               Email = reader.GetString("email"),
-              Cnpj = reader.GetString("cnpj"),
+              Cnpj = reader.GetInt32("cnpj"),
               Ativo = reader.GetBoolean("ativo")
           });
       }
@@ -47,7 +47,7 @@ public class FornecedorRepository : IFornecedorRepository
                     Id = reader.GetInt32("id"),
                     Nome = reader.GetString("nome"),
                     Email = reader.GetString("email"),
-                    Cnpj = reader.GetString("cnpj"),
+                    Cnpj = reader.GetInt32("cnpj"),
                     Ativo = reader.GetBoolean("ativo")
                 };
             }
@@ -132,4 +132,23 @@ public void Add(Fornecedor p) {
     cmd.ExecuteNonQuery();
 }
 
+    public object GetBycnpj(string cnpj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public object GetBynome(string nome)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Delete(string cnpj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public object GetBycnpj(int cnpj)
+    {
+        throw new NotImplementedException();
+    }
 }

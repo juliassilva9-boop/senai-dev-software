@@ -9,4 +9,8 @@ public interface IFornecedorRepository
     void Add(Fornecedor fornecedor);
     void Update(Fornecedor fornecedor);
     void Delete(int id);
+    object GetBycnpj(string cnpj);
+    object GetBynome(string nome);
+    void Delete(string cnpj);
+    object GetBycnpj(int cnpj);
 }

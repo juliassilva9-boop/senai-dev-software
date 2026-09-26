@@ -3,9 +3,8 @@ namespace MinhaApi.Models;
 
 public class Fornecedor
 {
-
-
-    public required string Cnpj { get; set; }
+  
+    public required int Cnpj { get; set; }
     public int Id { get; set; }
 
     public string Nome { get; set; }

@@ -39,13 +39,21 @@ builder.Services.AddScoped<
     IVendaService,
     VendaService>();
     // ✅ Registra o Repository
-builder.Services.AddScoped<
+    builder.Services.AddScoped<
     IFornecedorRepository,
     FornecedorRepository>();
 // ✅ Registra a Service
     builder.Services.AddScoped<
     IFornecedorService,
     FornecedorService>();
+    // ✅ Registra a Service
+    builder.Services.AddScoped<
+    DepartamentoService,
+    DepartamentoService>();
+    // ✅ Registra o Repository
+    builder.Services.AddScoped<
+    IDepartamentoRepository,
+    DepartamentoRepository>();
 
 
 
@@ -59,5 +67,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
+    // Controllers
+    app.MapControllers();
+
+
+    // Inicia a API
+    app.Run();
+
 }
 
