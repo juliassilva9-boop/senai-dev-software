@@ -89,4 +89,9 @@ public class FornecedorService(IFornecedorRepository repo) : IFornecedorService
     {
         throw new NotImplementedException();
     }
+
+    public Fornecedor Update(string cnpj, Fornecedor fornecedor)
+    {
+        throw new NotImplementedException();
+    }
 }
