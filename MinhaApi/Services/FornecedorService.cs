@@ -56,18 +56,16 @@ public class FornecedorService(IFornecedorRepository repo) : IFornecedorService
 
         return true;
     }
-    
-
-     public Fornecedor? Update(int Cnpj, Fornecedor f)
-  {
-      if (_repo.GetBycnpj(Cnpj) == null) return null;
-      f.Cnpj = Cnpj;
-      _repo.Update(fornecedor: f);
-      return f;
-  }
 
 
-
+    /* public Fornecedor? Update(int Cnpj, Fornecedor f)
+      {
+          if (_repo.GetBycnpj(Cnpj) == null) return null;
+          f.Cnpj = Cnpj;
+          _repo.Update(fornecedor: f);
+          return f;
+      }
+    */
     public Fornecedor? GetByNome(string Nome, Fornecedor fornecedor)
     {
     

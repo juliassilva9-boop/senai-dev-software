@@ -1,4 +1,3 @@
-using MinhaApi.Models;
 using MinhaApi.Repositories;
 using MinhaApi.Services;
 
@@ -9,6 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+
+builder.Services.AddCors(options => {
+    options.AddPolicy("FrontendPolicy", policy => {
+        policy.WithOrigins("http://localhost:5173/")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 
 // ✅ Registra o Repository
@@ -70,6 +77,7 @@ if (app.Environment.IsDevelopment())
     
     // Controllers
     app.MapControllers();
+    app.UseCors("FrontendPolicy");
 
 
     // Inicia a API
