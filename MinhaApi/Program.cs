@@ -10,8 +10,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 builder.Services.AddCors(options => {
-    options.AddPolicy("FrontendPolicy", policy => {
-        policy.WithOrigins("http://localhost:5173/")
+    options.AddPolicy("FrontendPolic", policy => {
+        policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -62,11 +62,6 @@ builder.Services.AddScoped<
     IDepartamentoRepository,
     DepartamentoRepository>();
 
-
-
-
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -76,12 +71,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     
     // Controllers
-    app.MapControllers();
-    app.UseCors("FrontendPolicy");
-
-
-    // Inicia a API
-    app.Run();
 
 }
-
+    app.UseCors("FrontendPolic");
+    app.MapControllers();
+    // Inicia a API
+    app.Run();

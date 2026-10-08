@@ -1,0 +1,618 @@
+/* =========================================================
+   SIDEBAR - NOVA SYSTEM
+   ========================================================= */
+
+:root {
+  --sidebar-width: 260px;
+
+  --sidebar-bg: #0F0C1B;
+  --sidebar-bg-secondary: #151126;
+
+  --purple: #7C3AED;
+  --purple-light: #8B5CF6;
+  --purple-dark: #5B21B6;
+
+  --yellow: #FACC15;
+  --yellow-neon: #FFE600;
+
+  --white: #FFFFFF;
+  --text-light: #F3F4F6;
+  --text-secondary: #9CA3AF;
+  --text-muted: #6B7280;
+
+  --sidebar-border: rgba(139, 92, 246, 0.18);
+
+  --transition:
+    all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.sidebar {
+
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: var(--sidebar-width);
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 25px 16px;
+
+  z-index: 1000;
+
+  background:
+    linear-gradient(
+      180deg,
+      #1A102F 0%,
+      #0F0C1B 100%
+    );
+
+  border-right:
+    1px solid
+    var(--sidebar-border);
+
+  box-shadow:
+    10px 0 40px
+    rgba(0, 0, 0, 0.30);
+
+  backdrop-filter:
+    blur(20px);
+
+  animation:
+    sidebarEnter 0.5s ease;
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.sidebar-logo {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding:
+    3px 8px 25px;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+}
+
+
+/* Símbolo */
+
+.logo-symbol {
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color:
+    var(--yellow);
+
+  font-size: 20px;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--purple),
+      var(--purple-dark)
+    );
+
+  box-shadow:
+    0 0 20px
+    rgba(124, 58, 237, 0.45);
+
+  animation:
+    logoGlow 3s ease-in-out infinite;
+}
+
+
+/* Nome */
+
+.logo-content {
+
+  display: flex;
+
+  flex-direction: column;
+
+  line-height: 1.1;
+}
+
+
+.logo-content strong {
+
+  color:
+    var(--white);
+
+  font-size: 19px;
+
+  font-weight: 750;
+
+  letter-spacing: -0.5px;
+}
+
+
+.logo-content span {
+
+  margin-top: 4px;
+
+  color:
+    var(--yellow);
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   MENU
+   ========================================================= */
+
+.sidebar-menu {
+
+  flex: 1;
+
+  padding-top: 28px;
+
+  overflow-y: auto;
+}
+
+
+.menu-title {
+
+  display: block;
+
+  padding:
+    0 12px;
+
+  margin-bottom: 10px;
+
+  color:
+    var(--text-muted);
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.6px;
+}
+
+
+.menu-system {
+
+  margin-top: 28px;
+}
+
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+.sidebar-link {
+
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  width: 100%;
+
+  padding:
+    13px 14px;
+
+  margin-bottom: 5px;
+
+  border-radius: 11px;
+
+  color:
+    var(--text-secondary);
+
+  font-size: 13px;
+
+  font-weight: 500;
+
+  transition:
+    var(--transition);
+
+  overflow: hidden;
+}
+
+
+/* Barra lateral */
+
+.sidebar-link::before {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  top: 50%;
+
+  width: 3px;
+
+  height: 0;
+
+  border-radius:
+    0 5px 5px 0;
+
+  background:
+    var(--yellow);
+
+  transform:
+    translateY(-50%);
+
+  transition:
+    var(--transition);
+}
+
+
+/* Hover */
+
+.sidebar-link:hover {
+
+  color:
+    var(--white);
+
+  background:
+    rgba(124, 58, 237, 0.12);
+
+  transform:
+    translateX(4px);
+}
+
+
+.sidebar-link:hover .sidebar-icon {
+
+  color:
+    var(--yellow);
+
+  transform:
+    scale(1.12);
+}
+
+
+/* =========================================================
+   ITEM ATIVO
+   ========================================================= */
+
+.sidebar-link.active {
+
+  color:
+    var(--white);
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(124, 58, 237, 0.30),
+      rgba(124, 58, 237, 0.06)
+    );
+
+  box-shadow:
+    inset 0 0 20px
+    rgba(124, 58, 237, 0.08),
+
+    0 0 20px
+    rgba(124, 58, 237, 0.07);
+}
+
+
+.sidebar-link.active::before {
+
+  height: 65%;
+
+  box-shadow:
+    0 0 12px
+    var(--yellow);
+}
+
+
+.sidebar-link.active .sidebar-icon {
+
+  color:
+    var(--yellow);
+
+  text-shadow:
+    0 0 10px
+    rgba(250, 204, 21, 0.45);
+}
+
+
+/* =========================================================
+   ÍCONES
+   ========================================================= */
+
+.sidebar-icon {
+
+  width: 22px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color:
+    var(--text-muted);
+
+  font-size: 18px;
+
+  transition:
+    var(--transition);
+}
+
+
+/* =========================================================
+   USUÁRIO
+   ========================================================= */
+
+.sidebar-user {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding:
+    15px 7px 3px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+}
+
+
+/* Avatar */
+
+.user-avatar {
+
+  width: 39px;
+  height: 39px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color:
+    var(--white);
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--purple),
+      var(--purple-dark)
+    );
+
+  box-shadow:
+    0 0 15px
+    rgba(124, 58, 237, 0.35);
+}
+
+
+/* Informações */
+
+.user-details {
+
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.user-details strong {
+
+  color:
+    var(--white);
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+.user-details span {
+
+  margin-top: 2px;
+
+  color:
+    var(--text-muted);
+
+  font-size: 9px;
+}
+
+
+/* =========================================================
+   BOTÃO SAIR
+   ========================================================= */
+
+.logout-button {
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 9px;
+
+  color:
+    var(--text-muted);
+
+  background:
+    transparent;
+
+  font-size: 18px;
+
+  transition:
+    var(--transition);
+}
+
+
+.logout-button:hover {
+
+  color:
+    var(--yellow);
+
+  background:
+    rgba(250, 204, 21, 0.08);
+
+  box-shadow:
+    0 0 15px
+    rgba(250, 204, 21, 0.12);
+
+  transform:
+    translateX(2px);
+}
+
+
+/* =========================================================
+   ANIMAÇÕES
+   ========================================================= */
+
+@keyframes sidebarEnter {
+
+  from {
+    opacity: 0;
+    transform: translateX(-25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+}
+
+
+@keyframes logoGlow {
+
+  0%,
+  100% {
+
+    box-shadow:
+      0 0 15px
+      rgba(124, 58, 237, 0.35);
+
+  }
+
+  50% {
+
+    box-shadow:
+      0 0 28px
+      rgba(124, 58, 237, 0.60);
+
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .sidebar {
+
+    width: 240px;
+
+    transform:
+      translateX(-100%);
+
+    transition:
+      transform 0.3s
+      cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+
+  .sidebar.open {
+
+    transform:
+      translateX(0);
+  }
+
+}
+
+
+/* =========================================================
+   ESPAÇO PARA O CONTEÚDO
+   ========================================================= */
+
+/*
+   Como a Sidebar é fixed, o conteúdo principal
+   precisa deixar espaço para ela.
+
+   Se o seu App tiver um container principal,
+   use a classe .main-content.
+*/
+
+.main-content {
+
+  margin-left:
+    var(--sidebar-width);
+
+  min-height: 100vh;
+
+  padding: 30px;
+
+  transition:
+    var(--transition);
+}
+
+
+@media (max-width: 768px) {
+
+  .main-content {
+
+    margin-left: 0;
+
+    padding: 20px;
+  }
+
+}
