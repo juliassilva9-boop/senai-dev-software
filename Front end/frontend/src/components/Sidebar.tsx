@@ -1,67 +1,22 @@
-<aside className="sidebar">
+import { NavLink } from 'react-router-dom'
 
-  {/* LOGO */}
-  <div className="sidebar-logo">
-    <div className="logo-symbol">◆</div>
+const getLinkStyle = ({ isActive }: { isActive: boolean }) => ({
+  display: 'block',
+  padding: '12px 20px',
+  color: isActive ? '#c8d400' : 'white',
+  fontWeight: isActive ? 700 : 400,
+  background: isActive ? 'rgba(255,255,255,.12)' : 'transparent',
+  borderLeft: isActive ? '4px solid #c8d400' : '4px solid transparent'
+})
 
-    <div className="logo-content">
-      <strong>Nova</strong>
-      <span>System</span>
-    </div>
-  </div>
-
-  {/* MENU */}
-  <nav className="sidebar-menu">
-
-    <span className="menu-title">MENU PRINCIPAL</span>
-
-    <a href="/" className="sidebar-link active">
-      <span className="sidebar-icon">⌂</span>
-      <span>Dashboard</span>
-    </a>
-
-    <a href="/clientes" className="sidebar-link">
-      <span className="sidebar-icon">♙</span>
-      <span>Clientes</span>
-    </a>
-
-    <a href="/produtos" className="sidebar-link">
-      <span className="sidebar-icon">▣</span>
-      <span>Produtos</span>
-    </a>
-
-    <a href="/relatorios" className="sidebar-link">
-      <span className="sidebar-icon">◫</span>
-      <span>Relatórios</span>
-    </a>
-
-    <span className="menu-title menu-system">
-      SISTEMA
-    </span>
-
-    <a href="/configuracoes" className="sidebar-link">
-      <span className="sidebar-icon">⚙</span>
-      <span>Configurações</span>
-    </a>
-
-  </nav>
-
-  {/* USUÁRIO */}
-  <div className="sidebar-user">
-
-    <div className="user-avatar">
-      JS
-    </div>
-
-    <div className="user-details">
-      <strong>Usuário</strong>
-      <span>Administrador</span>
-    </div>
-
-    <button className="logout-button" title="Sair">
-      ⇥
-    </button>
-
-  </div>
-
-</aside>
+function Sidebar() {
+  return (
+    <nav style={{ width: '210px', background: '#1a3d5c',
+      minHeight: '100vh', padding: '24px 0', flexShrink: 0 }}>
+      <div>MinhaApp</div>
+      <NavLink to="/produtos" style={getLinkStyle}>📦 Produtos</NavLink>
+      <NavLink to="/clientes" style={getLinkStyle}>👤 Clientes</NavLink>
+    </nav>
+  )
+}
+export default Sidebar

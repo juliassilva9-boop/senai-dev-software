@@ -7,18 +7,31 @@ interface Props {
 
 function ClienteList({ clientes, loading }: Props) {
   if (loading) return <p>Carregando...</p>
-  if (clientes.length === 0)
+  
+  // 1. Defesa: Garante que "clientes" existe e é de fato um Array antes de verificar o tamanho
+  if (!clientes || !Array.isArray(clientes) || clientes.length === 0) {
     return <p>Nenhum cliente cadastrado ainda.</p>
+  }
 
-  return (
-    <ul>
+  <div className="list-container">
+  <table className="data-table">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
       {clientes.map(c => (
-        <li key={c.id}>
-          <strong>{c.nome}</strong> — {c.email}
-          {c.cpf && <span> (CPF: {c.cpf})</span>}
-        </li>
+        <tr key={c.id}>
+          <td><strong>{c.nome}</strong></td>
+          <td>{c.email}</td>
+        </tr>
       ))}
-    </ul>
-  )
+    </tbody>
+  </table>
+</div>
+
 }
+
 export default ClienteList

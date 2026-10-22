@@ -3,6 +3,7 @@ import type { Cliente } from '../types/Cliente'
 import { clienteService } from '../services/clienteService'
 import ClienteForm from '../components/ClienteForm'
 import ClienteList from '../components/ClienteList'
+import Sidebar from '../components/Sidebar'
 
 function ClientesPage() {
   const [clientes, setClientes] = useState<Cliente[]>([])
@@ -15,10 +16,15 @@ function ClientesPage() {
   }
 
   useEffect(() => { carregarClientes() }, [])
-  return (<div>
+
+  return (
+    <div className="app-container">
+  <Sidebar />
+  <main className="main-content">
     <h1>Gestão de Clientes</h1>
     <ClienteForm onClienteCriado={carregarClientes} />
     <ClienteList clientes={clientes} loading={loading} />
-  </div>)
-}
-export default ClientesPage
+  </main>
+</div>
+
+}')

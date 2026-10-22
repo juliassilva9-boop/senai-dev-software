@@ -1,6 +1,6 @@
 
 import { useState } from 'react'
-import { VendaService } from '../services/vendaService'
+import { vendaService } from '../services/vendaService'
 
 interface Props {
   onVendaCriada: () => void
@@ -20,10 +20,13 @@ function VendaForm({ onVendaCriada }: Props) {
     try {
       setLoading(true)
 
-      await VendaService.criar({
+      await vendaService.criar({
         id_Cliente: Number(id_Cliente),
         id_Venda: Number(id_Venda),
-        Quantidade: Number(Quantidade)
+        Quantidade: Number(Quantidade),
+        quantidade: 0,
+        data_venda: 0,
+        valor: 0
       })
 
       setid_Cliente('')
