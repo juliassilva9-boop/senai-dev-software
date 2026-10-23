@@ -1,5 +1,6 @@
 
 import { useState } from 'react'
+import type { FormEvent } from 'react'
 import { vendaService } from '../services/vendaService'
 
 interface Props {
@@ -7,82 +8,106 @@ interface Props {
 }
 
 function VendaForm({ onVendaCriada }: Props) {
-  const [id_Cliente, setid_Cliente] = useState('')
-  const [id_Venda, setid_Venda] = useState('')
-  const [Quantidade, setQuantidade] = useState('')
+  const [clienteId, setClienteId] = useState('')
+  const [produtoId, setProdutoId] = useState('')
+  const [quantidade, setQuantidade] = useState('1')
+  const [valor, setValor] = useState('')
+  const [dataVenda, setDataVenda] = useState(
+    new Date().toISOString().slice(0, 10)
+  )
   const [erro, setErro] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setErro(null)
+    setLoading(true)
 
     try {
-      setLoading(true)
-
       await vendaService.criar({
-        id_Cliente: Number(id_Cliente),
-        id_Venda: Number(id_Venda),
-        Quantidade: Number(Quantidade),
-        quantidade: 0,
-        data_venda: 0,
-        valor: 0
+        cliente_id: Number(clienteId),
+        produto_id: Number(produtoId),
+        quantidade: Number(quantidade),
+        valor: Number(valor),
+        data_venda: dataVenda,
       })
 
-      setid_Cliente('')
-      setid_Venda('')
-      setQuantidade('')
+      setClienteId('')
+      setProdutoId('')
+      setQuantidade('1')
+      setValor('')
+      setDataVenda(new Date().toISOString().slice(0, 10))
 
       onVendaCriada()
-    } catch {
-      setErro('Erro ao cadastrar. Tente novamente.')
+    } catch (error) {
+      console.error('Erro ao cadastrar venda:', error)
+      setErro('Erro ao cadastrar venda. Verifique os dados e tente novamente.')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="form-vendas">
       <h2>Cadastrar Venda</h2>
 
-      {erro && <p>{erro}</p>}
+      {erro && <p role="alert">{erro}</p>}
 
-      <label htmlFor="id_Cliente">ID do Cliente</label>
+      <label htmlFor="clienteId">ID do Cliente</label>
       <input
-        id="id_Cliente"
+        id="clienteId"
         type="number"
         min="1"
-        value={id_Cliente}
-        onChange={e => setid_Cliente(e.target.value)}
+        value={clienteId}
+        onChange={(e) => setClienteId(e.target.value)}
         required
       />
 
-      <label htmlFor="id_Venda">ID da Venda</label>
+      <label htmlFor="produtoId">ID do Produto</label>
       <input
-        id="id_Venda"
+        id="produtoId"
         type="number"
         min="1"
-        value={id_Venda}
-        onChange={e => setid_Venda(e.target.value)}
+        value={produtoId}
+        onChange={(e) => setProdutoId(e.target.value)}
         required
       />
 
-      <label htmlFor="Quantidade">Quantidade</label>
+      <label htmlFor="quantidade">Quantidade</label>
       <input
-        id="Quantidade"
+        id="quantidade"
         type="number"
         min="1"
-        value={Quantidade}
-        onChange={e => setQuantidade(e.target.value)}
+        value={quantidade}
+        onChange={(e) => setQuantidade(e.target.value)}
+        required
+      />
+
+      <label htmlFor="valor">Valor total (R$)</label>
+      <input
+        id="valor"
+        type="number"
+        min="0.01"
+        step="0.01"
+        value={valor}
+        onChange={(e) => setValor(e.target.value)}
+        required
+      />
+
+      <label htmlFor="dataVenda">Data da Venda</label>
+      <input
+        id="dataVenda"
+        type="date"
+        value={dataVenda}
+        onChange={(e) => setDataVenda(e.target.value)}
         required
       />
 
       <button type="submit" disabled={loading}>
-        {loading ? 'Salvando...' : 'Cadastrar'}
+        {loading ? 'Salvando...' : 'Cadastrar Venda'}
       </button>
     </form>
   )
 }
 
 export default VendaForm
- 
