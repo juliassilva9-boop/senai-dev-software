@@ -27,8 +27,8 @@ function VendaForm({ onVendaCriada }: Props) {
       await vendaService.criar({
         cliente_id: Number(clienteId),
         produto_id: Number(produtoId),
-        quantidade: Number(quantidade),
-        valor: Number(valor),
+        Quantidade: Number(quantidade),
+        Valor: Number(valor),
         data_venda: dataVenda,
       })
 
