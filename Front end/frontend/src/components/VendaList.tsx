@@ -37,7 +37,7 @@ function VendaList({ Venda, loading }: Props) {
               <td>{v.id_Produto}</td>
               <td>{v.Quantidade}</td>
               <td>
-                {Number(v.valor).toLocaleString('pt-BR', {
+                {Number(v.Valor).toLocaleString('pt-BR', {
                   style: 'currency',
                   currency: 'BRL',
                 })}

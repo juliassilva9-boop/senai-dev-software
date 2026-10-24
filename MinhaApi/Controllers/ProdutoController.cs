@@ -1,6 +1,9 @@
 using MinhaApi.Models;
 using MinhaApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+
+[Authorize]   // ← agora exige token válido
 
 [ApiController]
 [Route("api/[controller]")]

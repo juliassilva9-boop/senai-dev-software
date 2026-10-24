@@ -13,8 +13,8 @@ function VendaForm({ onVendaCriada }: Props) {
   const [quantidade, setQuantidade] = useState('1')
   const [valor, setValor] = useState('')
   const [dataVenda, setDataVenda] = useState(
-    new Date().toISOString().slice(0, 10)
-  )
+  () => new Date().toISOString().slice(0, 10)
+)
   const [erro, setErro] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -30,6 +30,8 @@ function VendaForm({ onVendaCriada }: Props) {
         Quantidade: Number(quantidade),
         Valor: Number(valor),
         data_venda: dataVenda,
+        id_Produto: undefined,
+        id_Cliente: undefined
       })
 
       setClienteId('')

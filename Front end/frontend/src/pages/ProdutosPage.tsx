@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react'
 import type { Produto } from '../types/Produto'
 import { produtoService } from '../services/produtoService'
@@ -10,25 +11,54 @@ function ProdutosPage() {
   const [loading, setLoading] = useState(false)
   const [erro, setErro] = useState<string | null>(null)
 
-  const carregarProdutos = async () => {
+  useEffect(() => {
+    async function carregarProdutos() {
+      try {
+        setLoading(true)
+        setErro(null)
+
+        const dados = await produtoService.listar()
+        setProdutos(dados)
+      } catch (error) {
+        console.error('Erro ao carregar produtos:', error)
+        setErro('Erro ao carregar produtos.')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    carregarProdutos()
+  }, [])
+
+  async function atualizarProdutos() {
     try {
-      setLoading(true)
-      setProdutos(await produtoService.listar())
-    } catch { setErro('Erro ao carregar produtos.') }
-    finally { setLoading(false) }
+      setErro(null)
+      const dados = await produtoService.listar()
+      setProdutos(dados)
+    } catch (error) {
+      console.error('Erro ao atualizar produtos:', error)
+      setErro('Erro ao atualizar produtos.')
+    }
   }
 
-  useEffect(() => { carregarProdutos() }, [])
+  return (
+    <div className="app-container">
+      <Sidebar />
 
-  return (<div className="app-container">
-  <Sidebar />
-  <main className="main-content">
-    <h1>Gestão de Produtos</h1>
-    <ProdutoForm onProdutoCriado={carregarProdutos} />
-    {erro && <p>{erro}</p>}
-    <ProdutoList produtos={produtos} loading={loading} />
-  </main>
-</div>
-)
+      <main className="main-content">
+        <h1>Gestão de Produtos</h1>
+
+        <ProdutoForm onProdutoCriado={atualizarProdutos} />
+
+        {erro && <p role="alert">{erro}</p>}
+
+        <ProdutoList
+          produtos={produtos}
+          loading={loading}
+        />
+      </main>
+    </div>
+  )
 }
+
 export default ProdutosPage
