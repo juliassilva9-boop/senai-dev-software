@@ -97,8 +97,6 @@ app.UseAuthorization();   // 2º você pode entrar?
 app.MapControllers();
 
 
-var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

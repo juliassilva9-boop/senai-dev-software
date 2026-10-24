@@ -9,7 +9,7 @@ namespace MinhaApi.Controllers
     public class FornecedoresController(Services.IFornecedorService service) : ControllerBase
     {
         private readonly Services.IFornecedorService _service = service;
-        private string cnpj = "";
+     
 
         // GET /api/Fornecedores
         [HttpGet]
