@@ -19,7 +19,7 @@ builder.Services.AddCors(options => {
               .AllowAnyMethod();
     });
 });
-
+//Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("123456"));
 
 // ✅ Registra o Repository
 builder.Services.AddScoped<

@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage'
 import ProdutosPage from './pages/ProdutosPage'
 import ClientesPage from './pages/ClientesPage'
 import './App.css'
+import DashboardPage from './pages/DashboardPage'
 
 
 function Layout() {
@@ -16,13 +17,16 @@ function Layout() {
       <main style={{ flex: 1, padding: '24px' }}>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<Navigate to="/produtos" replace />} />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/produtos" element={
             <ProtectedRoute><ProdutosPage /></ProtectedRoute>
           } />
           <Route path="/clientes" element={
             <ProtectedRoute><ClientesPage /></ProtectedRoute>
           } />
+        <Route path="/dashboard" element={
+          <ProtectedRoute><DashboardPage /></ProtectedRoute>
+        } />
         </Routes>
       </main>
     </div>

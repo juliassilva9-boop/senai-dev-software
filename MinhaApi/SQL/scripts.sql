@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS vendas (
     FOREIGN KEY (cliente_id) REFERENCES clientes(id),
     FOREIGN KEY (produto_id) REFERENCES produtos(id)
 );
-);
+
 
 -- 5. Inserção de Dados Iniciais (Carga)
 INSERT INTO clientes (nome, email, telefone) 

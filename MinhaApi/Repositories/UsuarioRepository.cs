@@ -9,7 +9,7 @@ public class UsuarioRepository : IUsuarioRepository
 
     public UsuarioRepository(IConfiguration config)
     {
-        _cs = config.GetConnectionString("Default")
+        _cs = config.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException(
                 "A connection string 'Default' não foi configurada."
             );

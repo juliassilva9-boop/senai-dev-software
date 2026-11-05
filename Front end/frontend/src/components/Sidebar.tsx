@@ -16,8 +16,10 @@ function Sidebar() {
     <nav style={{ width: '210px', background: '#1a3d5c',
       minHeight: '100vh', padding: '24px 0', flexShrink: 0 }}>
       <div>MinhaApp</div>
+      <NavLink to="/dashboard" style={getLinkStyle}> 📊 Dashboard</NavLink>
       <NavLink to="/produtos" style={getLinkStyle}>📦 Produtos</NavLink>
       <NavLink to="/clientes" style={getLinkStyle}>👤 Clientes</NavLink>
+{/* ...demais links (Vendas) */}
       // no JSX, depois dos NavLinks:
 <div style={{ padding: '20px', color: 'white', fontSize: '13px' }}>
   <p>👤 {user?.nome}</p>
