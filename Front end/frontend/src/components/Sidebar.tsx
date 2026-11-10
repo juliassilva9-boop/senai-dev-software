@@ -19,8 +19,6 @@ function Sidebar() {
       <NavLink to="/dashboard" style={getLinkStyle}> 📊 Dashboard</NavLink>
       <NavLink to="/produtos" style={getLinkStyle}>📦 Produtos</NavLink>
       <NavLink to="/clientes" style={getLinkStyle}>👤 Clientes</NavLink>
-{/* ...demais links (Vendas) */}
-      // no JSX, depois dos NavLinks:
 <div style={{ padding: '20px', color: 'white', fontSize: '13px' }}>
   <p>👤 {user?.nome}</p>
   <button onClick={logout}>🚪 Sair</button>

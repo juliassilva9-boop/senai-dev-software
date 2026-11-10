@@ -4,7 +4,6 @@ import type { Produto } from '../types/Produto'
 import { produtoService } from '../services/produtoService'
 import ProdutoForm from '../components/ProdutoForm'
 import ProdutoList from '../components/ProdutoList'
-import Sidebar from '../components/Sidebar'
 
 function ProdutosPage() {
   const [produtos, setProdutos] = useState<Produto[]>([])
@@ -43,7 +42,6 @@ function ProdutosPage() {
 
   return (
     <div className="app-container">
-      <Sidebar />
 
       <main className="main-content">
         <h1>Gestão de Produtos</h1>

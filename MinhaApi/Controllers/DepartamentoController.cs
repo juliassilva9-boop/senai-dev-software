@@ -41,9 +41,9 @@ public class DepartamentoController(IDepartamentoService service) : ControllerBa
 
     // PUT /api/produto/1
     [HttpPut("{id_Departamento}")]
-    public IActionResult Update(int id_Departamento, [FromBody] Departamento Departamento)
+    public IActionResult Update(int id_Departamento, [FromBody] Departamento departamento)
         {
-            var atualizado = _service.Update(id_Departamento);
+            var atualizado = _service.Update(id_Departamento, departamento);
 
             if (atualizado == null)
                 return NotFound();

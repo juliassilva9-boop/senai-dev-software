@@ -3,7 +3,7 @@ using MinhaApi.Models;
 using MinhaApi.Repositories;
 namespace MinhaApi.Services;
 
-public class DepartamentoService : IDepartemntoService
+public class DepartamentoService : IDepartamentoService
 {
   private readonly IDepartamentoRepository _repo;
 
@@ -46,8 +46,4 @@ public class DepartamentoService : IDepartemntoService
     }
 
    
-}
-
-public interface IDepartemntoService
-{
 }

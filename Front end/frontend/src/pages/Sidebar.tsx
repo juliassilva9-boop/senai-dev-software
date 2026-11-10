@@ -5,7 +5,6 @@ function Sidebar() {
 
   return (
     <aside>
-      {/* Mantenha seus NavLinks aqui */}
 
       <div
         style={{

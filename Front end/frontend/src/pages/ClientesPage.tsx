@@ -4,7 +4,6 @@ import type { Cliente } from '../types/Cliente'
 import { clienteService } from '../services/clienteService'
 import ClienteForm from '../components/ClienteForm'
 import ClienteList from '../components/ClienteList'
-import Sidebar from '../components/Sidebar'
 
 function ClientesPage() {
   const [clientes, setClientes] = useState<Cliente[]>([])
@@ -57,7 +56,6 @@ function ClientesPage() {
 
   return (
     <div className="app-container">
-      <Sidebar />
 
       <main className="main-content">
         <h1>Gestão de Clientes</h1>

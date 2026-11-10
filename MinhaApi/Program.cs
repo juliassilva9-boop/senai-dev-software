@@ -1,3 +1,4 @@
+
 using MinhaApi.Repositories;
 using MinhaApi.Services;
 using System.Text;
@@ -6,110 +7,87 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Serviços
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
-builder.Services.AddCors(options => {
-    options.AddPolicy("FrontendPolic", policy => {
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolic", policy =>
+    {
         policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
-//Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("123456"));
 
-// ✅ Registra o Repository
-builder.Services.AddScoped<
-    IProdutoRepository,
-    ProdutoRepository>();
+// Produto
+builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
+builder.Services.AddScoped<IProdutoService, ProdutoService>();
 
-// ✅ Registra a Service
-builder.Services.AddScoped<
-    IProdutoService,
-    ProdutoService>();
+// Cliente
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
 
-    // ✅ Registra o Repository
-builder.Services.AddScoped<
-    IClienteRepository,
-    ClienteRepository>();
+// Venda
+builder.Services.AddScoped<IVendaRepository, VendaRepository>();
+builder.Services.AddScoped<IVendaService, VendaService>();
 
-// ✅ Registra a Service
-builder.Services.AddScoped<
-    IClienteService,
-    ClienteService>();
-// ✅ Registra o Repository
-builder.Services.AddScoped<
-    IVendaRepository,
-    VendaRepository>();
-//Registro do repository
-    builder.Services.AddScoped<
-    IVendaService,
-    VendaService>();
-    // ✅ Registra o Repository
-    builder.Services.AddScoped<
-    IFornecedorRepository,
-    FornecedorRepository>();
-// ✅ Registra a Service
-    builder.Services.AddScoped<
-    IFornecedorService,
-    FornecedorService>();
-    // ✅ Registra a Service
-    builder.Services.AddScoped<
-    DepartamentoService,
-    DepartamentoService>();
-    // ✅ Registra o Repository
-    builder.Services.AddScoped<
-    IDepartamentoRepository,
-    DepartamentoRepository>();
+// Fornecedor
+builder.Services.AddScoped<IFornecedorRepository, FornecedorRepository>();
+builder.Services.AddScoped<IFornecedorService, FornecedorService>();
 
-    
-// ===== JWT (antes do builder.Build()) =====
+// Departamento
+builder.Services.AddScoped<IDepartamentoRepository, DepartamentoRepository>();
+builder.Services.AddScoped<IDepartamentoService, DepartamentoService>();
+
+// Dashboard
+builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+
+// JWT
 var jwtKey = builder.Configuration["Jwt:Key"]!;
 
 builder.Services
-  .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-  .AddJwtBearer(opt => {
-    opt.TokenValidationParameters = new TokenValidationParameters {
-      ValidateIssuerSigningKey = true,
-      IssuerSigningKey = new SymmetricSecurityKey(
-          Encoding.UTF8.GetBytes(jwtKey)),
-      ValidateIssuer   = true,
-      ValidIssuer      = builder.Configuration["Jwt:Issuer"],
-      ValidateAudience = true,
-      ValidAudience    = builder.Configuration["Jwt:Audience"],
-      ValidateLifetime = true
-    };
-  });
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(opt =>
+    {
+        opt.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtKey)),
 
-// ===== Injeção de Dependência =====
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+
+            ValidateLifetime = true
+        };
+    });
+
+// Usuário e autenticação
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
-// ===== Pipeline — A ORDEM IMPORTA =====
-app.UseCors(/* sua política */);
-app.UseAuthentication();  // 1º quem é você?
-app.UseAuthorization();   // 2º você pode entrar?
-app.MapControllers();
+// Pipeline HTTP
+app.UseCors("FrontendPolic");
 
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    
-    // Controllers
-
 }
-    app.UseCors("FrontendPolic");
-    app.MapControllers();
-    // Inicia a API
 
-    app.Run();
+app.UseAuthentication();
+app.UseAuthorization();
 
-    
+app.MapControllers();
+
+app.Run();
