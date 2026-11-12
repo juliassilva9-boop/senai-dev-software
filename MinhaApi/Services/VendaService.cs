@@ -54,5 +54,25 @@ public IEnumerable<Venda> GetAll()
   public Venda? GetById(int id)
       => _repositoryVenda.GetById(id);
 
+public List<ProdutoDto> ObterTodos()
+    {
+        var produtos = _repo.ObterTodos();
 
+        // ✨ Para cada produto, calcular o base64 da foto
+        foreach (var p in produtos)
+            p.FotoBase64 = _fotoService.LerBase64(p.Foto);
+
+        return produtos;
+    }
+
+    // No método ObterPorId() existente, ADICIONAR antes do return:
+    public ProdutoDto? ObterPorId(int id)
+    {
+        var produto = _repo.ObterPorId(id);
+        if (produto is null) return null;
+
+        // ✨ Enriquecer com base64 antes de retornar
+        produto.FotoBase64 = _fotoService.LerBase64(produto.Foto);
+        return produto;
+    }
 }

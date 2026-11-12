@@ -9,4 +9,7 @@ public interface IProdutoRepository
     void Add(Produto produto);
     void Update(Produto produto);
     void Delete(int id);
+
+    // Adicionar ao final da interface existente:
+void AtualizarFoto(int id, string? nomeArquivo);
 }

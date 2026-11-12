@@ -6,12 +6,19 @@ using MinhaApi.Models;
 using MinhaApi.Services;
 using MinhaApi.Repositories;
 public class ProdutoService : IProdutoService
+
 {
-  private readonly IProdutoRepository _repo;
+    private readonly IProdutoRepository _repo;
+    private readonly IFotoService _fotoService; // ✨ novo
 
-  public ProdutoService(IProdutoRepository repo)
-      => _repo = repo;
-
+    public ProdutoService(
+        IProdutoRepository repo,
+        IFotoService fotoService) // DI injeta automaticamente
+    {
+        _repo        = repo;
+        _fotoService = fotoService;
+    }
+    
   public IEnumerable<Produto> GetAll()
       => _repo.GetAll();
 
@@ -46,4 +53,23 @@ public class ProdutoService : IProdutoService
 
         return true;
     }
+
+  public async Task<string> SalvarFoto(int id, IFormFile arquivo)
+    {
+        var produto = _repo.ObterPorId(id)
+            ?? throw new KeyNotFoundException(
+                   "Produto não encontrado.");
+
+        // Se já tem foto, apaga a antiga do disco
+        if (!string.IsNullOrEmpty(produto.Foto))
+            _fotoService.Deletar(produto.Foto);
+
+        var nome = await _fotoService.SalvarAsync(arquivo);
+        _repo.AtualizarFoto(id, nome);
+
+        // Retorna a data URL — controller manda direto ao React
+        return _fotoService.LerBase64(nome)!;
+    }
+
+
 }

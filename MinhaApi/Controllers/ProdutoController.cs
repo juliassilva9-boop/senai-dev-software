@@ -65,4 +65,40 @@ public class ProdutoController(IProdutoService service) : ControllerBase
 
         return NoContent();
     }
+    
+    // O construtor já injeta IProdutoService — não muda
+// Apenas adicionar os dois métodos abaixo na classe:
+
+[HttpPost("{id}/foto")]
+public async Task<IActionResult> UploadFoto(
+    int id, IFormFile arquivo)
+{
+    if (arquivo == null || arquivo.Length == 0)
+        return BadRequest(new { message = "Nenhum arquivo enviado." });
+
+    try
+    {
+        var fotoBase64 = await _service.SalvarFoto(id, arquivo);
+        // Retorna a data URL pronta para o React usar no <img src>
+        return Ok(new { fotoBase64 });
+    }
+    catch (KeyNotFoundException ex)
+        { return NotFound(new { message = ex.Message }); }
+    catch (ArgumentException ex)
+        { return BadRequest(new { message = ex.Message }); }
+}
+
+[HttpDelete("{id}/foto")]
+public IActionResult RemoverFoto(int id)
+{
+    try
+    {
+        _service.RemoverFoto(id);
+        return NoContent(); // 204 — sem corpo
+    }
+    catch (KeyNotFoundException ex)
+        { return NotFound(new { message = ex.Message }); }
+}
+
+
 }
