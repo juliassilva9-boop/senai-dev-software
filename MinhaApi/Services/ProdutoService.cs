@@ -71,5 +71,8 @@ public class ProdutoService : IProdutoService
         return _fotoService.LerBase64(nome)!;
     }
 
-
+    public void RemoverFoto(int id)
+    {
+        throw new NotImplementedException();
+    }
 }

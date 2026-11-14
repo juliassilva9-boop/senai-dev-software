@@ -12,4 +12,5 @@ public interface IProdutoRepository
 
     // Adicionar ao final da interface existente:
 void AtualizarFoto(int id, string? nomeArquivo);
+    Produto? ObterPorId(int id);
 }

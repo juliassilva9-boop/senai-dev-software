@@ -1,8 +1,26 @@
 
+using MySql.Data.MySqlClient;
+using MinhaApi.Models;
+
+public class ProdutoRepository
+{
+    private readonly string _connectionString;
+
+    public ProdutoRepository(IConfiguration config)
+    {
+        _connectionString = config.GetConnectionString("DefaultConnection")!;
+    }
+
+    // LISTAR TODOS OS PRODUTOS
+    public List<Produto> GetAll()
+    {
+        var lista = new List<Produto>();
+
         using var conn = new MySqlConnection(_connectionString);
         conn.Open();
 
-        string sql = "SELECT id, nome, preco, estoque, ativo FROM produtos";
+        string sql = @"SELECT id, nome, preco, estoque, ativo
+                       FROM produtos";
 
         using var cmd = new MySqlCommand(sql, conn);
         using var reader = cmd.ExecuteReader();
@@ -28,7 +46,9 @@
         using var conn = new MySqlConnection(_connectionString);
         conn.Open();
 
-        string sql = "SELECT id, nome, preco, estoque, ativo FROM produtos WHERE id = @Id";
+        string sql = @"SELECT id, nome, preco, estoque, ativo
+                       FROM produtos
+                       WHERE id = @Id";
 
         using var cmd = new MySqlCommand(sql, conn);
         cmd.Parameters.AddWithValue("@Id", id);
@@ -56,8 +76,11 @@
         using var conn = new MySqlConnection(_connectionString);
         conn.Open();
 
-        string sql = @"INSERT INTO produtos (nome, preco, estoque, ativo)
-                       VALUES (@Nome, @Preco, @Estoque, @Ativo);
+        string sql = @"INSERT INTO produtos
+                       (nome, preco, estoque, ativo)
+                       VALUES
+                       (@Nome, @Preco, @Estoque, @Ativo);
+
                        SELECT LAST_INSERT_ID();";
 
         using var cmd = new MySqlCommand(sql, conn);
@@ -117,29 +140,19 @@
         using var conn = new MySqlConnection(_connectionString);
         conn.Open();
 
-        string sql = "UPDATE produtos SET foto = @Foto WHERE id = @Id";
+        string sql = @"UPDATE produtos
+                       SET foto = @Foto
+                       WHERE id = @Id";
 
         using var cmd = new MySqlCommand(sql, conn);
 
-        cmd.Parameters.AddWithValue("@Foto",
-            (object?)nomeArquivo ?? DBNull.Value);
+        cmd.Parameters.AddWithValue(
+            "@Foto",
+            (object?)nomeArquivo ?? DBNull.Value
+        );
 
         cmd.Parameters.AddWithValue("@Id", id);
 
         cmd.ExecuteNonQuery();
     }
-
-    
-        public void AtualizarFoto(int id, string? nomeArquivo)
-    {
-        using var conn = new MySqlConnection(_cs);
-        conn.Open();
-        using var cmd = new MySqlCommand(
-            "UPDATE produtos SET foto = @Foto WHERE id = @Id", conn);
-
-        cmd.Parameters.AddWithValue("@Foto",
-            (object?)nomeArquivo ?? DBNull.Value); // null → NULL no banco
-        cmd.Parameters.AddWithValue("@Id", id);
-        cmd.ExecuteNonQuery();
-    }
-
+}
