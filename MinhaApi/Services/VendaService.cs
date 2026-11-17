@@ -1,78 +1,66 @@
-
-//API 
-
-
 using MinhaApi.Models;
-using MinhaApi.Services;
 using MinhaApi.Repositories;
 
-public class VendaService : IVendaService
+namespace MinhaApi.Services
 {
- private readonly IVendaRepository _repositoryVenda;
- private readonly IClienteRepository _repositoryCliente;
- private readonly IProdutoRepository _repositoryProduto;
-
-  public VendaService(IVendaRepository repositoryVenda, IClienteRepository repositoryCliente, IProdutoRepository repositoryProduto)
-      => (_repositoryVenda, _repositoryCliente, _repositoryProduto) = (repositoryVenda, repositoryCliente, repositoryProduto);
-
-
-
-  public Venda Create(Venda venda){
-    
-    
-    var produto = _repositoryProduto.GetById(venda.Produto_id);
-    if (produto == null)
-      throw new ArgumentException("Produto não encontrado");
-
-   if (venda.Quantidade <= 0)
-     throw new ArgumentException("Não existe Estoque disponível");
-      
-    if(produto.Estoque < venda.Quantidade)  
-       throw new ArgumentException("Quantidade inválida");
-
-    if(venda.Cliente_id < venda.Cliente_id)  
-       throw new ArgumentException("Cliente Invalido");   
-
-    if(venda.Produto_id < venda.Cliente_id)  
-       throw new ArgumentException("Produto Invalido");      
-
-    if(venda.Data_venda< venda.Data_venda)  
-       throw new ArgumentException("Data de venda inválida");     
-
-
-    venda.Valor = produto.Preco * venda.Quantidade;
-      
-
-
-      _repositoryVenda.Add(venda);
-      return venda;
-  }
-
-public IEnumerable<Venda> GetAll()
-      => _repositoryVenda.GetAll();
-
-  public Venda? GetById(int id)
-      => _repositoryVenda.GetById(id);
-
-public List<ProdutoDto> ObterTodos()
+    public class VendaService : IVendaService
     {
-        var produtos = _repo.ObterTodos();
+        private readonly IVendaRepository _repositoryVenda;
+        private readonly IClienteRepository _repositoryCliente;
+        private readonly IProdutoRepository _repositoryProduto;
 
-        // ✨ Para cada produto, calcular o base64 da foto
-        foreach (var p in produtos)
-            p.FotoBase64 = _fotoService.LerBase64(p.Foto);
+        public VendaService(
+            IVendaRepository repositoryVenda,
+            IClienteRepository repositoryCliente,
+            IProdutoRepository repositoryProduto)
+        {
+            _repositoryVenda = repositoryVenda;
+            _repositoryCliente = repositoryCliente;
+            _repositoryProduto = repositoryProduto;
+        }
 
-        return produtos;
-    }
+        // CRIAR VENDA
+        public Venda Create(Venda venda)
+        {
+            // Verificar se o produto existe
+            var produto = _repositoryProduto.GetById(venda.Produto_id);
 
-    // No método ObterPorId() existente, ADICIONAR antes do return:
-    public ProdutoDto? ObterPorId(int id)
-    {
-        var produto = _repo.ObterPorId(id);
-        if (produto is null) return null;
+            if (produto == null)
+                throw new ArgumentException("Produto não encontrado.");
 
-        // ✨ Enriquecer com base64 antes de retornar
-        produto.FotoBase64 = _fotoService.LerBase64(produto.Foto);
-        return produto;
+            // Verificar se o cliente existe
+            var cliente = _repositoryCliente.GetById(venda.Cliente_id);
+
+            if (cliente == null)
+                throw new ArgumentException("Cliente não encontrado.");
+
+            // Verificar quantidade
+            if (venda.Quantidade <= 0)
+                throw new ArgumentException("A quantidade deve ser maior que zero.");
+
+            // Verificar estoque
+            if (produto.Estoque < venda.Quantidade)
+                throw new ArgumentException("Quantidade indisponível em estoque.");
+
+            // Calcular valor
+            venda.Valor = produto.Preco * venda.Quantidade;
+
+            // Salvar venda
+            _repositoryVenda.Add(venda);
+
+            return venda;
+        }
+
+        // LISTAR VENDAS
+        public IEnumerable<Venda> GetAll()
+        {
+            return _repositoryVenda.GetAll();
+        }
+
+        // BUSCAR VENDA POR ID
+        public Venda? GetById(int id)
+        {
+            return _repositoryVenda.GetById(id);
+        }
     }
 }

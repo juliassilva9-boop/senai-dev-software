@@ -56,7 +56,7 @@ public class ProdutoService : IProdutoService
 
   public async Task<string> SalvarFoto(int id, IFormFile arquivo)
     {
-        var produto = _repo.ObterPorId(id)
+        var produto = _repo.GetById(id)
             ?? throw new KeyNotFoundException(
                    "Produto não encontrado.");
 

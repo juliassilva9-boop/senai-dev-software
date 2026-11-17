@@ -1,158 +1,176 @@
 
 using MySql.Data.MySqlClient;
+using Microsoft.Extensions.Configuration;
 using MinhaApi.Models;
 
-public class ProdutoRepository
+namespace MinhaApi.Repositories
 {
-    private readonly string _connectionString;
-
-    public ProdutoRepository(IConfiguration config)
+    public class ProdutoRepository : IProdutoRepository
     {
-        _connectionString = config.GetConnectionString("DefaultConnection")!;
-    }
+        private readonly string _connectionString;
 
-    // LISTAR TODOS OS PRODUTOS
-    public List<Produto> GetAll()
-    {
-        var lista = new List<Produto>();
-
-        using var conn = new MySqlConnection(_connectionString);
-        conn.Open();
-
-        string sql = @"SELECT id, nome, preco, estoque, ativo
-                       FROM produtos";
-
-        using var cmd = new MySqlCommand(sql, conn);
-        using var reader = cmd.ExecuteReader();
-
-        while (reader.Read())
+        public ProdutoRepository(IConfiguration config)
         {
-            lista.Add(new Produto
-            {
-                Id = reader.GetInt32("id"),
-                Nome = reader.GetString("nome"),
-                Preco = reader.GetDecimal("preco"),
-                Estoque = reader.GetInt32("estoque"),
-                Ativo = reader.GetBoolean("ativo")
-            });
+            _connectionString = config.GetConnectionString("DefaultConnection")!;
         }
 
-        return lista;
-    }
-
-    // BUSCAR PRODUTO POR ID
-    public Produto? GetById(int id)
-    {
-        using var conn = new MySqlConnection(_connectionString);
-        conn.Open();
-
-        string sql = @"SELECT id, nome, preco, estoque, ativo
-                       FROM produtos
-                       WHERE id = @Id";
-
-        using var cmd = new MySqlCommand(sql, conn);
-        cmd.Parameters.AddWithValue("@Id", id);
-
-        using var reader = cmd.ExecuteReader();
-
-        if (reader.Read())
+        // LISTAR TODOS OS PRODUTOS
+        public List<Produto> GetAll()
         {
-            return new Produto
+            var lista = new List<Produto>();
+
+            using var conn = new MySqlConnection(_connectionString);
+            conn.Open();
+
+            string sql = @"SELECT id, nome, preco, estoque, ativo, foto
+                           FROM produtos";
+
+            using var cmd = new MySqlCommand(sql, conn);
+            using var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
             {
-                Id = reader.GetInt32("id"),
-                Nome = reader.GetString("nome"),
-                Preco = reader.GetDecimal("preco"),
-                Estoque = reader.GetInt32("estoque"),
-                Ativo = reader.GetBoolean("ativo")
-            };
+                lista.Add(new Produto
+                {
+                    Id = reader.GetInt32("id"),
+                    Nome = reader.GetString("nome"),
+                    Preco = reader.GetDecimal("preco"),
+                    Estoque = reader.GetInt32("estoque"),
+                    Ativo = reader.GetBoolean("ativo"),
+                    Foto = reader.IsDBNull(reader.GetOrdinal("foto"))
+                        ? null
+                        : reader.GetString("foto")
+                });
+            }
+
+            return lista;
         }
 
-        return null;
-    }
+        // BUSCAR PRODUTO POR ID
+        public Produto? GetById(int id)
+        {
+            using var conn = new MySqlConnection(_connectionString);
+            conn.Open();
 
-    // ADICIONAR PRODUTO
-    public void Add(Produto p)
-    {
-        using var conn = new MySqlConnection(_connectionString);
-        conn.Open();
+            string sql = @"SELECT id, nome, preco, estoque, ativo, foto
+                           FROM produtos
+                           WHERE id = @Id";
 
-        string sql = @"INSERT INTO produtos
-                       (nome, preco, estoque, ativo)
-                       VALUES
-                       (@Nome, @Preco, @Estoque, @Ativo);
+            using var cmd = new MySqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@Id", id);
 
-                       SELECT LAST_INSERT_ID();";
+            using var reader = cmd.ExecuteReader();
 
-        using var cmd = new MySqlCommand(sql, conn);
+            if (reader.Read())
+            {
+                return new Produto
+                {
+                    Id = reader.GetInt32("id"),
+                    Nome = reader.GetString("nome"),
+                    Preco = reader.GetDecimal("preco"),
+                    Estoque = reader.GetInt32("estoque"),
+                    Ativo = reader.GetBoolean("ativo"),
+                    Foto = reader.IsDBNull(reader.GetOrdinal("foto"))
+                        ? null
+                        : reader.GetString("foto")
+                };
+            }
 
-        cmd.Parameters.AddWithValue("@Nome", p.Nome);
-        cmd.Parameters.AddWithValue("@Preco", p.Preco);
-        cmd.Parameters.AddWithValue("@Estoque", p.Estoque);
-        cmd.Parameters.AddWithValue("@Ativo", p.Ativo);
+            return null;
+        }
 
-        var idGerado = cmd.ExecuteScalar();
+     
 
-        p.Id = Convert.ToInt32(idGerado);
-    }
+        // ADICIONAR PRODUTO
+        public void Add(Produto p)
+        {
+            using var conn = new MySqlConnection(_connectionString);
+            conn.Open();
 
-    // ATUALIZAR PRODUTO
-    public void Update(Produto p)
-    {
-        using var conn = new MySqlConnection(_connectionString);
-        conn.Open();
+            string sql = @"INSERT INTO produtos
+                           (nome, preco, estoque, ativo, foto)
+                           VALUES
+                           (@Nome, @Preco, @Estoque, @Ativo, @Foto);
 
-        string sql = @"UPDATE produtos
-                       SET nome = @Nome,
-                           preco = @Preco,
-                           estoque = @Estoque,
-                           ativo = @Ativo
-                       WHERE id = @Id";
+                           SELECT LAST_INSERT_ID();";
 
-        using var cmd = new MySqlCommand(sql, conn);
+            using var cmd = new MySqlCommand(sql, conn);
 
-        cmd.Parameters.AddWithValue("@Id", p.Id);
-        cmd.Parameters.AddWithValue("@Nome", p.Nome);
-        cmd.Parameters.AddWithValue("@Preco", p.Preco);
-        cmd.Parameters.AddWithValue("@Estoque", p.Estoque);
-        cmd.Parameters.AddWithValue("@Ativo", p.Ativo);
+            cmd.Parameters.AddWithValue("@Nome", p.Nome);
+            cmd.Parameters.AddWithValue("@Preco", p.Preco);
+            cmd.Parameters.AddWithValue("@Estoque", p.Estoque);
+            cmd.Parameters.AddWithValue("@Ativo", p.Ativo);
+            cmd.Parameters.AddWithValue(
+                "@Foto",
+                (object?)p.Foto ?? DBNull.Value
+            );
 
-        cmd.ExecuteNonQuery();
-    }
+            var idGerado = cmd.ExecuteScalar();
 
-    // EXCLUIR PRODUTO
-    public void Delete(int id)
-    {
-        using var conn = new MySqlConnection(_connectionString);
-        conn.Open();
+            p.Id = Convert.ToInt32(idGerado);
+        }
 
-        string sql = "DELETE FROM produtos WHERE id = @Id";
+        // ATUALIZAR PRODUTO
+        public void Update(Produto p)
+        {
+            using var conn = new MySqlConnection(_connectionString);
+            conn.Open();
 
-        using var cmd = new MySqlCommand(sql, conn);
+            string sql = @"UPDATE produtos
+                           SET nome = @Nome,
+                               preco = @Preco,
+                               estoque = @Estoque,
+                               ativo = @Ativo
+                           WHERE id = @Id";
 
-        cmd.Parameters.AddWithValue("@Id", id);
+            using var cmd = new MySqlCommand(sql, conn);
 
-        cmd.ExecuteNonQuery();
-    }
+            cmd.Parameters.AddWithValue("@Id", p.Id);
+            cmd.Parameters.AddWithValue("@Nome", p.Nome);
+            cmd.Parameters.AddWithValue("@Preco", p.Preco);
+            cmd.Parameters.AddWithValue("@Estoque", p.Estoque);
+            cmd.Parameters.AddWithValue("@Ativo", p.Ativo);
 
-    // ATUALIZAR FOTO DO PRODUTO
-    public void AtualizarFoto(int id, string? nomeArquivo)
-    {
-        using var conn = new MySqlConnection(_connectionString);
-        conn.Open();
+            cmd.ExecuteNonQuery();
+        }
 
-        string sql = @"UPDATE produtos
-                       SET foto = @Foto
-                       WHERE id = @Id";
+        // EXCLUIR PRODUTO
+        public void Delete(int id)
+        {
+            using var conn = new MySqlConnection(_connectionString);
+            conn.Open();
 
-        using var cmd = new MySqlCommand(sql, conn);
+            string sql = "DELETE FROM produtos WHERE id = @Id";
 
-        cmd.Parameters.AddWithValue(
-            "@Foto",
-            (object?)nomeArquivo ?? DBNull.Value
-        );
+            using var cmd = new MySqlCommand(sql, conn);
 
-        cmd.Parameters.AddWithValue("@Id", id);
+            cmd.Parameters.AddWithValue("@Id", id);
 
-        cmd.ExecuteNonQuery();
+            cmd.ExecuteNonQuery();
+        }
+
+        // ATUALIZAR FOTO DO PRODUTO
+        public void AtualizarFoto(int id, string? nomeArquivo)
+        {
+            using var conn = new MySqlConnection(_connectionString);
+            conn.Open();
+
+            string sql = @"UPDATE produtos
+                           SET foto = @Foto
+                           WHERE id = @Id";
+
+            using var cmd = new MySqlCommand(sql, conn);
+
+            cmd.Parameters.AddWithValue(
+                "@Foto",
+                (object?)nomeArquivo ?? DBNull.Value
+            );
+
+            cmd.Parameters.AddWithValue("@Id", id);
+
+            cmd.ExecuteNonQuery();
+        }
+
+
     }
 }

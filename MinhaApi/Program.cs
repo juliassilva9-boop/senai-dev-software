@@ -1,4 +1,3 @@
-
 using MinhaApi.Repositories;
 using MinhaApi.Services;
 using System.Text;
@@ -47,9 +46,8 @@ builder.Services.AddScoped<IDepartamentoService, DepartamentoService>();
 builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 
+// Fotos
 builder.Services.AddScoped<IFotoService, FotoService>();
-
-
 
 // JWT
 var jwtKey = builder.Configuration["Jwt:Key"]!;

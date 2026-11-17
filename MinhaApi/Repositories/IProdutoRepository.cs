@@ -1,16 +1,20 @@
+
 using MinhaApi.Models;
 
-namespace MinhaApi.Repositories;
-
-public interface IProdutoRepository
+namespace MinhaApi.Repositories
 {
-    IEnumerable<Produto> GetAll();
-    Produto? GetById(int id);
-    void Add(Produto produto);
-    void Update(Produto produto);
-    void Delete(int id);
+    public interface IProdutoRepository
+    {
+        List<Produto> GetAll();
 
-    // Adicionar ao final da interface existente:
-void AtualizarFoto(int id, string? nomeArquivo);
-    Produto? ObterPorId(int id);
+        Produto? GetById(int id);
+
+        void Add(Produto p);
+
+        void Update(Produto p);
+
+        void Delete(int id);
+
+        void AtualizarFoto(int id, string? nomeArquivo);
+    }
 }

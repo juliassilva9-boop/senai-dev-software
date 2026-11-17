@@ -13,6 +13,5 @@ public class Produto
 
     public bool Ativo { get; set; }
         = true;
-   
-
+    public string? Foto { get; internal set; }
 }
